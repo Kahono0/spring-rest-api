@@ -34,9 +34,23 @@ public class RegistrationController {
         }
     }
 
-    @PutMapping("/put")
-    public String update(){
-        return "";
+    @PutMapping("/put/{id}")
+    public RegistrationResponseModel update(@RequestBody RegistrationRequestModel body, @PathVariable("id") String id) {
+        boolean response = registrationHandler.update(body, id);
+
+        if(response){
+            return new RegistrationResponseModel(
+                    "Update successful",
+                    true, 200, null
+            );
+        }
+        else{
+            return new RegistrationResponseModel(
+                    "Update not successful",
+                    false, 500, null
+            );
+        }
+
     }
 
     @GetMapping("/get")

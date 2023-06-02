@@ -49,7 +49,26 @@ public class RegistrationHandler {
         }
     }
 
-    public boolean update(){
+    public boolean update(RegistrationRequestModel model, String id){
+        try{
+            String sql = "UPDATE lab1.users SET name = ?, email = ?, Dob = ?, phone = ?, address = ? WHERE id = ?";
+            Object params[] = new Object[]{
+                    model.getName(),
+                    model.getEmail(),
+                    model.getDob(),
+                    model.getPhone(),
+                    model.getAddress(),
+                    id
+            };
 
+            jdbcTemplate.update(sql, params);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+       return true;
     }
+
+
 }
