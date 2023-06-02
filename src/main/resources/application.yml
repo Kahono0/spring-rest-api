@@ -1,0 +1,24 @@
+spring:
+  port: 8081
+  application:
+    name: lab1
+  datasource:
+    url: jdbc:mysql://localhost:3306/lab1?SL=false
+    username: root
+    password: root
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 10
+      max-lifetime: 1200000
+      idle-timeout: 300000
+      auto-commit: true
+    initialization-mode: always
+
+  jpa:
+    properties:
+        dialect: org.hibernate.dialect.MySQLDialect
+        id:
+          new_generator_mappings: false
+        format_sql: true
+    generate-ddl: true
