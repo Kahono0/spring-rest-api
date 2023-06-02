@@ -34,8 +34,8 @@ public class RegistrationController {
         }
     }
 
-    @PutMapping("/put/{id}")
-    public RegistrationResponseModel update(@RequestBody RegistrationRequestModel body, @PathVariable("id") String id) {
+    @PutMapping("/put")
+    public RegistrationResponseModel update(@RequestBody RegistrationRequestModel body, @RequestParam(name="id") String id) {
         boolean response = registrationHandler.update(body, id);
 
         if(response){
@@ -61,8 +61,29 @@ public class RegistrationController {
         );
     }
 
+    @GetMapping("/get/{id}")
+    public RegistrationResponseModel findOne(@PathVariable String id){
+        return new RegistrationResponseModel(
+                "Registration successful",
+                true, 200, registrationHandler.fetchOne(id)
+        );
+    }
+
     @DeleteMapping("/delete")
-    public String delete(){
-        return "";
+    public RegistrationResponseModel delete(@RequestParam(name="id") String id){
+        boolean response = registrationHandler.delete(id);
+
+        if(response){
+            return new RegistrationResponseModel(
+                    "Delete successful",
+                    true, 200, null
+            );
+        }
+        else{
+            return new RegistrationResponseModel(
+                    "Delete not successful",
+                    false, 500, null
+            );
+        }
     }
 }

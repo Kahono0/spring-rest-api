@@ -18,7 +18,7 @@ public class RegistrationHandler {
 
         try {
             String sql = "INSERT INTO lab1.users (name, email, Dob, phone, address) VALUES (?, ?, ?, ?, ?)";
-            Object params[] = new Object[]{
+            Object[] params = new Object[]{
                     model.getName(),
                     model.getEmail(),
                     model.getDob(),
@@ -35,16 +35,33 @@ public class RegistrationHandler {
         return true;
     }
 
-    public List<ResponseModel> fetch(){
+    public ResponseModel fetchOne(String id){
+        ResponseModel response;
         try{
-            String sql = "SELECT name, address, email, Dob, phone FROM lab1.users";
+            String sql = "SELECT id, name, address, email, Dob, phone FROM lab1.users WHERE id = ?";
+            Object[] params = new Object[]{id};
 
-            List <ResponseModel> response = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ResponseModel.class));
+            response = jdbcTemplate.queryForObject(sql, params, BeanPropertyRowMapper.newInstance(ResponseModel.class));
             return response;
         }
         catch (Exception e){
             e.printStackTrace();
-            List <ResponseModel> response = new ArrayList<>();
+            response = new ResponseModel();
+            return response;
+        }
+    }
+
+    public List<ResponseModel> fetch(){
+        List<ResponseModel> response;
+        try{
+            String sql = "SELECT id, name, address, email, Dob, phone FROM lab1.users";
+
+            response = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ResponseModel.class));
+            return response;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            response = new ArrayList<>();
             return response;
         }
     }
@@ -52,12 +69,28 @@ public class RegistrationHandler {
     public boolean update(RegistrationRequestModel model, String id){
         try{
             String sql = "UPDATE lab1.users SET name = ?, email = ?, Dob = ?, phone = ?, address = ? WHERE id = ?";
-            Object params[] = new Object[]{
+            Object[] params = new Object[]{
                     model.getName(),
                     model.getEmail(),
                     model.getDob(),
                     model.getPhone(),
                     model.getAddress(),
+                    id
+            };
+
+            jdbcTemplate.update(sql, params);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+       return true;
+    }
+
+    public boolean delete(String id){
+        try{
+            String sql = "DELETE FROM lab1.users WHERE id = ?";
+            Object[] params = new Object[]{
                     id
             };
 

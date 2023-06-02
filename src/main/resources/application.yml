@@ -22,3 +22,4 @@ spring:
           new_generator_mappings: false
         format_sql: true
     generate-ddl: true
+
